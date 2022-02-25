@@ -1,4 +1,4 @@
-from brownie import Contract, accounts,config,network,LotCoin,MillionDraw
+from brownie import Contract, accounts,config,network,LotCoin,MillionDraw,LinkToken
 from web3 import Web3
 
 LOCAL_BLOCKCHAIN=["development","mainnet-fork"]
@@ -25,6 +25,10 @@ def get_million_draw():
     million_draw = Contract.from_abi(MillionDraw._name,contract_address,MillionDraw.abi)
     return million_draw
 
+def get_link():
+    contract_address = config["networks"][network.show_active()]["link"]
+    link = Contract.from_abi(LinkToken._name,contract_address,LinkToken.abi)
+    return link
 
 def fund_with_lot(contract_address,account=None,lot_coin=None,entryFee=Web3.toWei(1000,"ether")):
     account =  account if account else get_account()
@@ -32,6 +36,14 @@ def fund_with_lot(contract_address,account=None,lot_coin=None,entryFee=Web3.toWe
     tx = lot_coin.transfer(contract_address,entryFee,{"from":account})
     tx.wait(1)
     print(f"contract {contract_address} funded {entryFee} with lot")
+    return tx
+
+def fund_with_link(contract_address,account=None,link=None,link_fee=Web3.toWei(0.0001,"ether")):
+    account = account if account else get_account()
+    link = link if link else get_link()
+    tx = link.transfer(contract_address,link_fee,{"from":account})
+    tx.wait(1)
+    print(f"contract {contract_address} funded {link_fee} with link")
     return tx
 
 def join_draw(million_draw_address,account=None):

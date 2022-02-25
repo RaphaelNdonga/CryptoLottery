@@ -1,16 +1,21 @@
 dotenv: .env
 wallets:
-  from_key: ${PRIVATE_KEY2}
+  from_key: ${PRIVATE_KEY}
 
 dependencies:
   - OpenZeppelin/openzeppelin-contracts@4.5.0
+  - smartcontractkit/chainlink@1.1.1
 
 compiler:
   solc:
     remappings:
       - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.5.0'
+      - '@chainlink=smartcontractkit/chainlink@1.1.1'
 
 networks:
   polygon-test:
     lot_coin: '0xE1Db74F56b719535abc68E29290eC2E844AC069e'
-    million_draw: '0xF1D74AA510f82Ffbb319Cb342883Ef00F6826355'
+    million_draw: '0x37D76fe19Da572e88f789444918Be1b440929061'
+    link: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB'
+    vrf_coordinator: '0x8C7382F9D8f56b33781fE506E897a4F1e2d17255'
+    key_hash: '0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4'
