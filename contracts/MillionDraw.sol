@@ -15,11 +15,10 @@ contract MillionDraw{
         owner = msg.sender;
     }
 
-    function joinDraw(ERC20 token) public{
-        uint256 erc20balance = token.balanceOf(msg.sender);
-        require(entryFee <= erc20balance,"balance is low");
-        token.increaseAllowance(msg.sender,entryFee);
+    function joinDraw() public{
         participants.push(msg.sender);
-        
+    }
+    function getParticipantsNum() view public returns(uint256){
+        return participants.length;
     }
 }

@@ -1,7 +1,7 @@
 from brownie import LotCoin,MillionDraw
 from web3 import Web3
 
-from scripts.helpful_scripts import fund_with_lot, get_account, get_lot_coin
+from scripts.helpful_scripts import fund_with_lot, get_account, get_lot_coin, get_million_draw, join_draw
 
 
 def deploy_lot_coin():
@@ -25,8 +25,10 @@ def transfer_lot_coin(sender,receiver,amount):
 
 def main():
     # deploy_lot_coin()
-    million_draw_contract = deploy_million_draw()
+    # million_draw_contract = deploy_million_draw()
+    million_draw_contract = get_million_draw()
     fund_with_lot(contract_address=million_draw_contract.address)
+    join_draw(million_draw_contract)
     # sender = get_account()
     # mike_address = "0x00fE76cbadEe293339360655bb477c29dba01078"
     # amount = Web3.toWei(1000,"ether")
