@@ -1,10 +1,11 @@
-from scripts.helpful_scripts import get_account
+from scripts.helpful_scripts import get_account, POLYGON_NETWORKS
 from brownie import MillionDraw, config, network
 from web3 import Web3
 
 
 def deploy_million_draw():
-    network.priority_fee("30 gwei")
+    if network.show_active() in POLYGON_NETWORKS:
+        network.priority_fee("30 gwei")
     account = get_account()
     million_draw = MillionDraw.deploy(
         config["networks"][network.show_active()]["vrf_coordinator"],

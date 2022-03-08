@@ -2,6 +2,7 @@ from brownie import Contract, accounts, config, network, LotCoin, MillionDraw, L
 from web3 import Web3
 
 LOCAL_BLOCKCHAIN = ["development", "mainnet-fork"]
+POLYGON_NETWORKS = ["polygon-main", "polygon-test"]
 
 
 def get_account(index=None, id=None):

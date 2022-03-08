@@ -11,7 +11,6 @@ contract MillionDraw is VRFConsumerBase {
     uint256 public randomNumber;
     address[] public participants;
     address public winner;
-    uint256 private linkFee = 0.0001 * (10**18);
 
     constructor(
         address _vrfCoordinator,

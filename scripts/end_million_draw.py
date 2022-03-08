@@ -1,10 +1,16 @@
-from scripts.helpful_scripts import get_account, get_lot_coin, get_million_draw
+from scripts.helpful_scripts import (
+    get_account,
+    get_lot_coin,
+    get_million_draw,
+    POLYGON_NETWORKS,
+)
 import time
 from brownie import network
 
 
 def main():
-    network.priority_fee("30 gwei")
+    if network.show_active() in POLYGON_NETWORKS:
+        network.priority_fee("30 gwei")
     million_draw_contract = get_million_draw()
     million_draw_contract.getRandomness({"from": get_account()})
     time.sleep(200)
