@@ -7,27 +7,32 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract MillionDraw is VRFConsumerBase {
     bytes32 internal keyHash;
-    uint256 internal fee;
+    uint256 internal linkFee;
     uint256 public randomNumber;
     address[] public participants;
     address public winner;
+    address private deployer;
+    uint256 internal winnings;
 
     constructor(
         address _vrfCoordinator,
         address _link,
         bytes32 _keyHash,
-        uint256 _fee
+        uint256 _linkFee,
+        address _deployer
     ) VRFConsumerBase(_vrfCoordinator, _link) {
         keyHash = _keyHash;
-        fee = _fee;
+        linkFee = _linkFee;
+        deployer = _deployer;
+        winnings = 1000 * (10**18);
     }
 
     function getRandomness() public returns (bytes32) {
         require(
-            LINK.balanceOf(address(this)) >= fee,
+            LINK.balanceOf(address(this)) >= linkFee,
             "Inadequate Link to fund this transaction"
         );
-        return requestRandomness(keyHash, fee);
+        return requestRandomness(keyHash, linkFee);
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
@@ -53,6 +58,11 @@ contract MillionDraw is VRFConsumerBase {
     }
 
     function fundWinner(IERC20 lotCoin) public {
-        lotCoin.transfer(winner, lotCoin.balanceOf(address(this)));
+        lotCoin.transfer(winner, winnings);
+        fundDeployer(lotCoin);
+    }
+
+    function fundDeployer(IERC20 lotCoin) private {
+        lotCoin.transfer(deployer, lotCoin.balanceOf(address(this)));
     }
 }

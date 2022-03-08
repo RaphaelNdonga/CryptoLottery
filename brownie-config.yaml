@@ -1,6 +1,6 @@
 dotenv: .env
 wallets:
-  from_key: ${PRIVATE_KEY2}
+  from_key: ${PRIVATE_KEY}
 
 dependencies:
   - OpenZeppelin/openzeppelin-contracts@4.5.0
@@ -15,7 +15,7 @@ compiler:
 networks:
   polygon-test:
     lot_coin: '0xE1Db74F56b719535abc68E29290eC2E844AC069e'
-    million_draw: '0x05C779bE6663aA7BB5AC757fa19A2A4d7Cc443b2'
+    million_draw: '0x1094162c4f504Bed3f08155DA0Ec30F5c2055362'
     link: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB'
     vrf_coordinator: '0x8C7382F9D8f56b33781fE506E897a4F1e2d17255'
     key_hash: '0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4'
