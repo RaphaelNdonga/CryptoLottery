@@ -48,11 +48,12 @@ def fund_with_lot(
     return tx
 
 
-def fund_with_link(
-    contract_address, account=None, link=None, link_fee=Web3.toWei(0.1, "ether")
-):
+def fund_with_link(contract_address, account=None, link=None):
     account = account if account else get_account()
     link = link if link else get_link()
+    link_fee = Web3.toWei(
+        config["networks"][network.show_active()]["link_fee"], "ether"
+    )
     tx = link.transfer(contract_address, link_fee, {"from": account})
     tx.wait(1)
     print(f"contract {contract_address} funded {link_fee} with link")

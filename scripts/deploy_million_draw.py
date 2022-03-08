@@ -4,12 +4,13 @@ from web3 import Web3
 
 
 def deploy_million_draw():
+    network.priority_fee("30 gwei")
     account = get_account()
     million_draw = MillionDraw.deploy(
         config["networks"][network.show_active()]["vrf_coordinator"],
         config["networks"][network.show_active()]["link"],
         config["networks"][network.show_active()]["key_hash"],
-        Web3.toWei(0.1, "ether"),
+        Web3.toWei(config["networks"][network.show_active()]["link_fee"], "ether"),
         {"from": account},
     )
     return million_draw

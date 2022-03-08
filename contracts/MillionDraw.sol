@@ -5,15 +5,12 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
-
-contract MillionDraw is VRFConsumerBase{
+contract MillionDraw is VRFConsumerBase {
     bytes32 internal keyHash;
     uint256 internal fee;
     uint256 public randomNumber;
     address[] public participants;
     address public winner;
-
-    uint256 private entryFee = 1000000000000000000000000;
     uint256 private linkFee = 0.0001 * (10**18);
 
     constructor(
@@ -41,19 +38,22 @@ contract MillionDraw is VRFConsumerBase{
         randomNumber = randomness;
     }
 
-
-    function joinDraw() public{
+    function joinDraw() public {
         participants.push(msg.sender);
     }
-    function getParticipantsNum() view public returns(uint256){
+
+    function getParticipantsNum() public view returns (uint256) {
         return participants.length;
     }
-    function getWinner() public returns(address){
+
+    function getWinner() public returns (address) {
         uint256 winnerIndex = randomNumber % getParticipantsNum();
         winner = participants[winnerIndex];
+        participants = new address[](0);
         return winner;
     }
+
     function fundWinner(IERC20 lotCoin) public {
-        lotCoin.transfer(winner,lotCoin.balanceOf(address(this)));
+        lotCoin.transfer(winner, lotCoin.balanceOf(address(this)));
     }
 }
