@@ -6,13 +6,13 @@ from scripts.helpful_scripts import get_account, POLYGON_NETWORKS
 def main():
     if network.show_active() in POLYGON_NETWORKS:
         network.priority_fee("30 gwei")
-    deposit(1)
+    deposit(Web3.toWei(0.01, "ether"))
 
 
 def deposit(amount):
     account = get_account()
     provider_address = config["networks"][network.show_active()][
-        "pool_addresses_provider"
+        "lending_pool_addresses_provider"
     ]
     pool_address_provider = interface.ILendingPoolAddressesProvider(provider_address)
     pool_address = pool_address_provider.getLendingPool()
