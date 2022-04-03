@@ -18,21 +18,20 @@ def deposit(amount):
     pool_address = pool_address_provider.getLendingPool()
     print(f"pool address obtained: {pool_address}")
     pool = interface.ILendingPool(pool_address)
-    weth = interface.WethInterface(
-        config["networks"][network.show_active()]["weth_token"]
-    )
-    tx = weth.deposit({"from": account, "value": amount})
+    wrapped = None
+    wrapped = interface.IWrapped(config["networks"][network.show_active()]["wrapped"])
+    tx = wrapped.deposit({"from": account, "value": amount})
     tx.wait(1)
-    weth_address = config["networks"][network.show_active()]["weth_token"]
-    weth_token = interface.IERC20(weth_address)
-    print("Approving transfer of weth token by pool")
-    approve_txn = weth_token.approve(pool_address, amount, {"from": account})
+    wrapped_address = config["networks"][network.show_active()]["wrapped"]
+    wrapped_token = interface.IERC20(wrapped_address)
+    print("Approving transfer of wrapped token by pool")
+    approve_txn = wrapped_token.approve(pool_address, amount, {"from": account})
     approve_txn.wait(1)
-    print("Weth approved successfully")
+    print("wrapped approved successfully")
     print("Depositing funds into aave")
 
     supply_txn = pool.deposit(
-        weth_address, amount, account.address, 0, {"from": account}
+        wrapped_address, amount, account.address, 0, {"from": account}
     )
     supply_txn.wait(1)
     account_data = pool.getUserAccountData(account.address)
