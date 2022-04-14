@@ -13,6 +13,7 @@ def deploy_million_draw():
         config["networks"][network.show_active()]["key_hash"],
         Web3.toWei(config["networks"][network.show_active()]["link_fee"], "ether"),
         account,
+        1,
         {"from": account},
     )
     one_million_lot = Web3.toWei(1_000, "ether")

@@ -14,17 +14,24 @@ contract MillionDraw is VRFConsumerBase {
     address private deployer;
     uint256 internal winnings;
 
+    uint256 private startTime;
+    uint256 private drawDays;
+
     constructor(
         address _vrfCoordinator,
         address _link,
         bytes32 _keyHash,
         uint256 _linkFee,
-        address _deployer
+        address _deployer,
+        uint256 _drawDays
     ) VRFConsumerBase(_vrfCoordinator, _link) {
         keyHash = _keyHash;
         linkFee = _linkFee;
         deployer = _deployer;
         winnings = 1000 * (10**18);
+
+        startTime = block.timestamp;
+        drawDays = _drawDays;
     }
 
     function getRandomness() public returns (bytes32) {
@@ -42,7 +49,13 @@ contract MillionDraw is VRFConsumerBase {
         randomNumber = randomness;
     }
 
-    function joinDraw() public {
+    modifier drawEnded() {
+        uint256 endTime = startTime + (drawDays * 1 days);
+        require(block.timestamp < endTime, "The draw has ended");
+        _;
+    }
+
+    function joinDraw() public drawEnded {
         participants.push(msg.sender);
     }
 
