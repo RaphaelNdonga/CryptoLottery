@@ -1,4 +1,9 @@
-from scripts.helpful_scripts import get_account, POLYGON_NETWORKS, get_lot_coin
+from scripts.helpful_scripts import (
+    get_account,
+    POLYGON_NETWORKS,
+    fund_with_link,
+    get_lot_coin,
+)
 from brownie import MillionDraw, config, network
 from web3 import Web3
 
@@ -18,6 +23,7 @@ def deploy_million_draw():
     )
     one_million_lot = Web3.toWei(1_000, "ether")
     transfer_lot_coin(account, million_draw, one_million_lot)
+    fund_with_link(contract_address=million_draw.address)
     return million_draw
 
 

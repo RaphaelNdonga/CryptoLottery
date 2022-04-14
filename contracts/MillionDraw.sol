@@ -12,7 +12,6 @@ contract MillionDraw is VRFConsumerBase {
     address[] public participants;
     address public winner;
     address private deployer;
-    uint256 internal winnings;
 
     uint256 private startTime;
     uint256 private drawDays;
@@ -28,7 +27,6 @@ contract MillionDraw is VRFConsumerBase {
         keyHash = _keyHash;
         linkFee = _linkFee;
         deployer = _deployer;
-        winnings = 1000 * (10**18);
 
         startTime = block.timestamp;
         drawDays = _drawDays;
@@ -71,11 +69,9 @@ contract MillionDraw is VRFConsumerBase {
     }
 
     function fundWinner(IERC20 lotCoin) public {
+        uint256 winnings = (lotCoin.balanceOf(address(this)) * 4) / 5;
+        uint256 deployerFee = (lotCoin.balanceOf(address(this)) * 1) / 5;
         lotCoin.transfer(winner, winnings);
-        fundDeployer(lotCoin);
-    }
-
-    function fundDeployer(IERC20 lotCoin) private {
-        lotCoin.transfer(deployer, lotCoin.balanceOf(address(this)));
+        lotCoin.transfer(deployer, deployerFee);
     }
 }
